@@ -1,0 +1,36 @@
+{
+  "ver": "2.3.5",
+  "uuid": "60e51438-ac1c-4421-a451-38f22b9132e9",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
+  "width": 659,
+  "height": 437,
+  "platformSettings": {},
+  "subMetas": {
+    "苏州园林": {
+      "ver": "1.0.4",
+      "uuid": "68befcc3-6668-40a9-a736-4be2a196c0ee",
+      "rawTextureUuid": "60e51438-ac1c-4421-a451-38f22b9132e9",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 659,
+      "height": 437,
+      "rawWidth": 659,
+      "rawHeight": 437,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}
