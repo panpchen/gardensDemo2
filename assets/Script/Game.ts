@@ -25,28 +25,47 @@ export default class Game extends cc.Component {
   bgs: cc.Node[] = [];
   @property([cc.Node])
   borderList: cc.Node[] = [];
+  @property([cc.Node])
+  arrowList: cc.Node[] = [];
   @property(cc.Node)
   bubble: cc.Node = null;
   @property(cc.Label)
   countLabel: cc.Label = null;
   @property(cc.Animation)
   overAni: cc.Animation = null;
+  @property(cc.Node)
+  arrowContent: cc.Node = null;
   private _canClick: boolean = false;
   private _lastTween = null;
   private _clickList: number[] = [];
 
   onLoad() {
     this.mainBg.active = true;
+    this.arrowContent.active = false;
     this._setBubbleStatus(false);
     this.overAni.node.active = false;
     this.countLabel.node.opacity = 0;
+
     this._startTitleAni(() => {
       this._updateCountLabel(0);
       this._startBgAni(() => {
         this._fadeInCountLabel(() => {
+          this.arrowContent.active = true;
           this._canClick = true;
         });
       });
+    });
+
+    this.arrowContent.children.forEach((arrow) => {
+      cc.tween(arrow)
+        .repeatForever(
+          cc
+            .tween()
+            .by(0.2, { position: cc.v2(25, -25) })
+            .delay(1)
+            .by(0.2, { position: cc.v2(-25, 25) })
+        )
+        .start();
     });
   }
 
@@ -105,22 +124,18 @@ export default class Game extends cc.Component {
     cc.Tween.stopAllByTarget(this.bubble);
     const id = Number(parm);
     this.borderList[id].active = true;
-    this._setBubbleStatus(true);
+    this.arrowList[id].active = false;
+    this._setBubbleStatus(true, id);
     this.bubble.scale = 0;
-    const mask = this.bubble.getChildByName("mask");
-    mask.opacity = 0;
     this._lastTween = cc
       .tween(this.bubble)
       .to(1, { scale: 1 }, { easing: "bounceOut" })
-      .call(() => {
-        mask.opacity = 170;
-      })
       .start();
 
     this.scheduleOnce(() => {
       this._lastTween = null;
     }, 1);
-    const label = this.bubble.getChildByName("label");
+    const label = this.bubble.getChildByName("bg").getChildByName("label");
     label.getComponent(cc.Label).string = CONFIG_TXT_LIST[id];
 
     this._setClickList(id);
@@ -139,8 +154,22 @@ export default class Game extends cc.Component {
     }
   }
 
-  _setBubbleStatus(enable: boolean) {
+  _setBubbleStatus(enable: boolean, id: number = -1) {
     this.bubble.active = enable;
+    const bubbleBg = this.bubble.getChildByName("bg");
+    if (enable) {
+      switch (id) {
+        case 0:
+          bubbleBg.setPosition(cc.v2(-26, -130));
+          break;
+        case 1:
+          bubbleBg.setPosition(cc.v2(-220, -56));
+          break;
+        case 2:
+          bubbleBg.setPosition(cc.v2(192, -75));
+          break;
+      }
+    }
   }
   onClickHideBubble() {
     this._setBubbleStatus(false);

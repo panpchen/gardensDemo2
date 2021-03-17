@@ -3,7 +3,7 @@
   "_name": "overLabel",
   "_objFlags": 0,
   "_native": "",
-  "_duration": 0.31666666666666665,
+  "_duration": 0.35,
   "sample": 60,
   "speed": 0.2,
   "wrapMode": 1,
@@ -12,14 +12,14 @@
       "y": [
         {
           "frame": 0,
-          "value": -34.817
+          "value": 87.822
         },
         {
-          "frame": 0.26666666666666666,
+          "frame": 0.3,
           "value": 286.986
         },
         {
-          "frame": 0.31666666666666665,
+          "frame": 0.35,
           "value": 525.748
         }
       ],
@@ -33,11 +33,11 @@
           "value": 255
         },
         {
-          "frame": 0.21666666666666667,
+          "frame": 0.25,
           "value": 255
         },
         {
-          "frame": 0.31666666666666665,
+          "frame": 0.35,
           "value": 0
         }
       ]
