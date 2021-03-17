@@ -1,0 +1,47 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "overLabel",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 0.31666666666666665,
+  "sample": 60,
+  "speed": 0.2,
+  "wrapMode": 1,
+  "curveData": {
+    "props": {
+      "y": [
+        {
+          "frame": 0,
+          "value": -34.817
+        },
+        {
+          "frame": 0.26666666666666666,
+          "value": 286.986
+        },
+        {
+          "frame": 0.31666666666666665,
+          "value": 525.748
+        }
+      ],
+      "opacity": [
+        {
+          "frame": 0,
+          "value": 0
+        },
+        {
+          "frame": 0.05,
+          "value": 255
+        },
+        {
+          "frame": 0.21666666666666667,
+          "value": 255
+        },
+        {
+          "frame": 0.31666666666666665,
+          "value": 0
+        }
+      ]
+    }
+  },
+  "events": []
+}

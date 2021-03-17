@@ -13,6 +13,8 @@ const CONFIG_TXT_LIST = [
   "西方园林建筑材料以大理石质为主，中式园林建筑材料则以土木为主。",
 ];
 
+const CONFIG_LENGTH = CONFIG_TXT_LIST.length;
+
 @ccclass
 export default class Game extends cc.Component {
   @property(cc.Node)
@@ -25,15 +27,30 @@ export default class Game extends cc.Component {
   borderList: cc.Node[] = [];
   @property(cc.Node)
   bubble: cc.Node = null;
+  @property(cc.Label)
+  countLabel: cc.Label = null;
+  @property(cc.Animation)
+  overAni: cc.Animation = null;
   private _canClick: boolean = false;
   private _lastTween = null;
+  private _clickList: number[] = [];
 
   onLoad() {
     this.mainBg.active = true;
-    this._startTitleAni(this._startBgAni.bind(this));
+    this._setBubbleStatus(false);
+    this.overAni.node.active = false;
+    this.countLabel.node.opacity = 0;
+    this._startTitleAni(() => {
+      this._updateCountLabel(0);
+      this._startBgAni(() => {
+        this._fadeInCountLabel(() => {
+          this._canClick = true;
+        });
+      });
+    });
   }
 
-  _startTitleAni(callback) {
+  _startTitleAni(callback: Function) {
     this.title.y = cc.winSize.height;
     cc.tween(this.title)
       .to(1.5, { y: 60 }, { easing: "bounceOut" })
@@ -49,13 +66,23 @@ export default class Game extends cc.Component {
       .start();
   }
 
-  _startBgAni() {
+  _fadeInCountLabel(callback: Function) {
+    this.countLabel.node.opacity = 0;
+    cc.tween(this.countLabel.node)
+      .to(0.8, { opacity: 255 })
+      .call(() => {
+        callback && callback();
+      })
+      .start();
+  }
+
+  _startBgAni(callback: Function) {
     let i = 0;
     this.schedule(
       () => {
         if (i >= this.bgs.length) {
           this.unscheduleAllCallbacks();
-          this._canClick = true;
+          callback && callback();
           return;
         }
 
@@ -78,7 +105,7 @@ export default class Game extends cc.Component {
     cc.Tween.stopAllByTarget(this.bubble);
     const id = Number(parm);
     this.borderList[id].active = true;
-    this.bubble.active = true;
+    this._setBubbleStatus(true);
     this.bubble.scale = 0;
     const mask = this.bubble.getChildByName("mask");
     mask.opacity = 0;
@@ -95,9 +122,31 @@ export default class Game extends cc.Component {
     }, 1);
     const label = this.bubble.getChildByName("label");
     label.getComponent(cc.Label).string = CONFIG_TXT_LIST[id];
+
+    this._setClickList(id);
   }
 
+  _setClickList(id: number) {
+    if (this._clickList.indexOf(id) != -1) {
+      return;
+    }
+
+    this._clickList.push(id);
+    this._updateCountLabel(this._clickList.length);
+    if (this._clickList.length >= CONFIG_LENGTH) {
+      this.overAni.node.active = true;
+      this.overAni.play();
+    }
+  }
+
+  _setBubbleStatus(enable: boolean) {
+    this.bubble.active = enable;
+  }
   onClickHideBubble() {
-    this.bubble.active = false;
+    this._setBubbleStatus(false);
+  }
+
+  _updateCountLabel(num: number) {
+    this.countLabel.string = `${num}/${CONFIG_LENGTH}`;
   }
 }
